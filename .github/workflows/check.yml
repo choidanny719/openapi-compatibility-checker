@@ -23,8 +23,8 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          git show "$BASE_SHA:examples/catalog.yaml" > "$RUNNER_TEMP/base.yaml"
-          openapi-check "$RUNNER_TEMP/base.yaml" examples/catalog.yaml --format junit > contract.xml
+          git show "$BASE_SHA:contracts/catalog.yaml" > "$RUNNER_TEMP/base.yaml"
+          openapi-check "$RUNNER_TEMP/base.yaml" contracts/catalog.yaml --format junit > contract.xml
       - uses: actions/upload-artifact@v4
         if: always() && github.event_name == 'pull_request'
         with:

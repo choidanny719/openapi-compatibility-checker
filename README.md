@@ -28,4 +28,4 @@ Checks cover removed operations and media types, mandatory request bodies and pa
 
 Use one self-contained document per version. External and recursive references are rejected. Quote response codes and ambiguous YAML strings. The checker describes the documented contract and assumes clients accept extra fields in open response objects. It cannot prove runtime behavior, infer undocumented consumer expectations or assess the effect of every combination of schema constraints.
 
-GitHub Actions runs the tests on pushes and pull requests. For pull requests it also compares `examples/catalog.yaml` against the base revision, fails on findings and attaches the JUnit report. To use the check in another repo, install this tool and point the two arguments at that repo's base and proposed specs.
+GitHub Actions runs the tests on pushes and pull requests. For pull requests it also compares the sample API in `contracts/catalog.yaml` against the base revision, fails on findings and attaches the JUnit report. To use the check in another repo, install this tool and point the two arguments at that repo's base and proposed specs.
