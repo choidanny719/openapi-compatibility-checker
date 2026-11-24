@@ -9,6 +9,9 @@ paths:
         - name: author
           in: query
           schema: {type: string}
+        - name: isbn
+          in: query
+          schema: {type: string}
       responses:
         '200':
           description: Matching books
