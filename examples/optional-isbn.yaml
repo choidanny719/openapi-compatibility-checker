@@ -1,0 +1,22 @@
+openapi: 3.0.3
+info: {title: Catalog, version: '1'}
+paths:
+  /books:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: Book created
+components:
+  schemas:
+    Book:
+      type: object
+      required: [title]
+      properties:
+        title: {type: string}
+        isbn: {type: string}

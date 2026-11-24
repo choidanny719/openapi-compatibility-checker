@@ -1,0 +1,32 @@
+name: Check API contracts
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install '.[test]'
+      - run: python -m pytest -q
+      - run: openapi-check examples/catalog.yaml examples/optional-isbn.yaml
+      - name: Check pull request against the base contract
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git show "$BASE_SHA:examples/catalog.yaml" > "$RUNNER_TEMP/base.yaml"
+          openapi-check "$RUNNER_TEMP/base.yaml" examples/catalog.yaml --format junit > contract.xml
+      - uses: actions/upload-artifact@v4
+        if: always() && github.event_name == 'pull_request'
+        with:
+          name: compatibility-report-${{ matrix.python }}
+          path: contract.xml

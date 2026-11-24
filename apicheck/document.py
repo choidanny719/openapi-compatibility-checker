@@ -1,3 +1,4 @@
+import math
 from pathlib import Path
 from urllib.parse import unquote
 
@@ -31,7 +32,11 @@ def expand(value, root, trail=(), budget=None):
     if isinstance(value, list):
         return [expand(item, root, trail, budget) for item in value]
     if not isinstance(value, dict):
-        return value
+        if value is None or isinstance(value, (bool, int, str)):
+            return value
+        if isinstance(value, float) and math.isfinite(value):
+            return value
+        raise DocumentError(f"expected a JSON-compatible value, got {value!r}")
     if "$ref" in value:
         ref = value["$ref"]
         if not isinstance(ref, str) or not ref.startswith("#/"):
